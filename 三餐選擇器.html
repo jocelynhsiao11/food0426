@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>三餐選擇器</title>
+</head>
+<body>
+
+	<h1>三餐選擇器</h1>
+
+	<form onsubmit="return false;">
+		<label for="text">請問你想吃什麼？</label>
+
+		<label for="food-type">主食還是小食？</label>
+		<select id="food-type" name="food-type">
+			<option value="主食">主食</option>
+			<option value="小食">小食</option>
+		</select><br>
+
+		<label for="food-style">中式西式日式？</label>
+		<select id="food-style" name="food-style">
+			<option value="中式">中式</option>
+			<option value="西式">西式</option>
+			<option value="日式">日式</option>
+		</select><br>
+
+		<label for="food-price">平價或是奢侈的？</label>
+		<select id="food-price" name="food-price">
+			<option value="平價">平價</option>
+			<option value="奢侈的">奢侈的</option>
+		</select><br>
+
+		<button onclick="askChatGPT()">送出</button>
+	</form>
+
+	<div id="answer"></div>
+
+	<script
+	  src="https://cdn.jsdelivr.net/npm/@openai/openai-js-sdk@1.0.0/dist/openai-js-sdk.umd.min.js"
+	  integrity="sha384-qUvxYiN6rmjL5/5v5bwWf6Gnafvu+p3qOFDR02CjZV72HXKVYBrAhim3qzQshxJe"
+	  crossorigin="anonymous"></script>
+
+	<script>
+		const openai = new OpenAI(apiKey="<YOUR_API_KEY>");
+
+		async function askChatGPT() {
+			// 取得表單中的資料
+			const question = document.getElementById("question").value;
+			const foodType = document.getElementById("food-type").value;
+			const foodStyle = document.getElementById("food-style").value;
+			const foodPrice = document.getElementById("food-price").value;
+
+			// 拼湊成 ChatGPT 的輸入
+			const prompt = `我想吃${question}，主食還是小食？${foodType}，中式西式日式？${foodStyle}，平價或是奢侈的？${foodPrice}`;
+
+			// 使用 OpenAI SDK 送出問題
+			const answer = await openai.complete({
+				engine: "davinci",
+				p
